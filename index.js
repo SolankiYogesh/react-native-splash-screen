@@ -7,8 +7,7 @@
  * Email:crazycodeboy@gmail.com
  * @flow
  */
-'use strict';
+"use strict";
 
-import { NativeModules } from 'react-native';
-export default NativeModules.SplashScreen;
-
+import SplashScreen from "./src/NativeSplashScreen";
+export default SplashScreen;

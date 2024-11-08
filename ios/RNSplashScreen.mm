@@ -9,7 +9,9 @@
 
 #import "RNSplashScreen.h"
 #import <React/RCTBridge.h>
-
+#ifdef RCT_NEW_ARCH_ENABLED
+#import <RNCSplashScreenSpec/RNCSplashScreenSpec.h>
+#endif
 static bool waiting = true;
 static bool addedJsLoadErrorObserver = false;
 static UIView* loadingView = nil;
@@ -69,5 +71,13 @@ RCT_EXPORT_METHOD(hide) {
 RCT_EXPORT_METHOD(show) {
     [RNSplashScreen show];
 }
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+(const facebook::react::ObjCTurboModule::InitParams &)params
+{
+  return std::make_shared<facebook::react::RNCSplashScreenSpecJSI>(params);
+}
+#endif
 
 @end

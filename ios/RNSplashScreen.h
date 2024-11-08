@@ -8,6 +8,9 @@
  */
 #import <React/RCTBridgeModule.h>
 #import <UIKit/UIKit.h>
+#ifdef RCT_NEW_ARCH_ENABLED
+#import <RNCSplashScreenSpec/RNCSplashScreenSpec.h>
+#endif
 
 @interface RNSplashScreen : NSObject<RCTBridgeModule>
 + (void)showSplash:(NSString*)splashScreen inRootView:(UIView*)rootView;

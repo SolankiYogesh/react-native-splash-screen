@@ -16,6 +16,7 @@ import java.lang.ref.WeakReference;
  * Email:crazycodeboy@gmail.com
  */
 public class SplashScreen {
+    static final String NAME = "RNCImageCropPicker";
     private static Dialog mSplashDialog;
     private static WeakReference<Activity> mActivity;
 
@@ -24,20 +25,17 @@ public class SplashScreen {
      */
     public static void show(final Activity activity, final int themeResId, final boolean fullScreen) {
         if (activity == null) return;
-        mActivity = new WeakReference<Activity>(activity);
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (!activity.isFinishing()) {
-                    mSplashDialog = new Dialog(activity, themeResId);
-                    mSplashDialog.setContentView(R.layout.launch_screen);
-                    mSplashDialog.setCancelable(false);
-                    if (fullScreen) {
-                        setActivityAndroidP(mSplashDialog);
-                    }
-                    if (!mSplashDialog.isShowing()) {
-                        mSplashDialog.show();
-                    }
+        mActivity = new WeakReference<>(activity);
+        activity.runOnUiThread(() -> {
+            if (!activity.isFinishing()) {
+                mSplashDialog = new Dialog(activity, themeResId);
+                mSplashDialog.setContentView(R.layout.launch_screen);
+                mSplashDialog.setCancelable(false);
+                if (fullScreen) {
+                    setActivityAndroidP(mSplashDialog);
+                }
+                if (!mSplashDialog.isShowing()) {
+                    mSplashDialog.show();
                 }
             }
         });
@@ -74,21 +72,18 @@ public class SplashScreen {
 
         final Activity _activity = activity;
 
-        _activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mSplashDialog != null && mSplashDialog.isShowing()) {
-                    boolean isDestroyed = false;
+        _activity.runOnUiThread(() -> {
+            if (mSplashDialog != null && mSplashDialog.isShowing()) {
+                boolean isDestroyed = false;
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        isDestroyed = _activity.isDestroyed();
-                    }
-
-                    if (!_activity.isFinishing() && !isDestroyed) {
-                        mSplashDialog.dismiss();
-                    }
-                    mSplashDialog = null;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    isDestroyed = _activity.isDestroyed();
                 }
+
+                if (!_activity.isFinishing() && !isDestroyed) {
+                    mSplashDialog.dismiss();
+                }
+                mSplashDialog = null;
             }
         });
     }
